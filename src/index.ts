@@ -1,5 +1,5 @@
 export { createNanoAgent } from "./agent.js";
-export { createMockModel } from "./adapters.js";
+export { createMockModel, createOpenAIResponsesModel } from "./adapters.js";
 export { buildNanoContext } from "./context.js";
 export { createNanoMemory, memoryToText, mergeMemory, summarizeMessages } from "./memory.js";
 export { estimateTokens, trimToTokens } from "./tokenizer.js";
@@ -20,3 +20,8 @@ export type {
   NanoValidator,
   TokenBudget,
 } from "./types.js";
+export type {
+  MockModelOptions,
+  OpenAIModelOptions,
+  OpenAIResponsesClient,
+} from "./adapters.js";

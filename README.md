@@ -9,10 +9,10 @@ Tiny AI agents with strict token, memory, and cost budgets.
 Nano Agent helps you build useful AI workflows without sending huge prompts, full chat history, or expensive model calls by default.
 
 ```text
-Naive context: 14,782 tokens
-Nano context:   1,204 tokens
-Saved:          91.9%
-Model:          cheap first
+Task                Budget    Naive tokens  Nano tokens  Saved
+refund reply       900       1,566         182          88.4%
+support triage     1,000     1,717         157          90.9%
+policy answer      1,200     2,389         148          93.8%
 ```
 
 ## Why
@@ -66,7 +66,10 @@ NPM_TOKEN
 ## Quick Start
 
 ```ts
-import { createNanoAgent } from "@pallattu/nano-agent";
+import OpenAI from "openai";
+import { createNanoAgent, createOpenAIResponsesModel } from "@pallattu/nano-agent";
+
+const openai = new OpenAI();
 
 const agent = createNanoAgent({
   budget: {
@@ -74,15 +77,10 @@ const agent = createNanoAgent({
     maxOutputTokens: 400,
   },
   models: {
-    cheap: {
-      name: "mini",
-      async complete(request) {
-        return {
-          text: "response",
-          inputTokens: request.messages.length,
-        };
-      },
-    },
+    cheap: createOpenAIResponsesModel(openai, {
+      model: "gpt-5-mini",
+      reasoning: { effort: "low" },
+    }),
   },
   memory: {
     constraints: ["Refunds over $100 require approval."],
@@ -123,6 +121,45 @@ Example output:
   }
 }
 ```
+
+## Benchmark
+
+```sh
+npm run benchmark
+```
+
+Example output:
+
+```text
+Nano Agent Benchmark
+
+Task                Budget    Naive tokens  Nano tokens  Saved     Dropped
+refund reply        900       1,566         182          88.4%     2
+support triage      1000      1,717         157          90.9%     2
+policy answer       1200      2,389         148          93.8%     2
+meeting follow-up   800       1,330         149          88.8%     2
+bug report          950       1,662         150          91.0%     2
+
+Total naive context: 8,664 tokens
+Total nano context:  786 tokens
+Total saved:         90.9%
+```
+
+## OpenAI Adapter
+
+Nano Agent includes an adapter for the official OpenAI JavaScript SDK's Responses API.
+
+```ts
+import OpenAI from "openai";
+import { createOpenAIResponsesModel } from "@pallattu/nano-agent";
+
+const model = createOpenAIResponsesModel(new OpenAI(), {
+  model: "gpt-5-mini",
+  reasoning: { effort: "low" },
+});
+```
+
+`openai` is an optional peer dependency so Nano Agent stays small for users who bring their own model adapter.
 
 ## Core Concepts
 
@@ -194,6 +231,10 @@ Standalone context budgeter for any LLM call.
 
 Creates a small working memory snapshot.
 
+### `createOpenAIResponsesModel(client, options)`
+
+Creates an adapter for `client.responses.create()`.
+
 ### `createMockModel(options)`
 
 Test/demo adapter for deterministic local examples.
@@ -208,7 +249,6 @@ It is a small runtime primitive for this problem:
 
 ## Roadmap
 
-- OpenAI adapter
 - Anthropic adapter
 - provider pricing table
 - JSON schema validator helper
