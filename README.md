@@ -8,6 +8,8 @@ Tiny AI agents with strict token, memory, and cost budgets.
 
 Nano Agent helps you build useful AI workflows without sending huge prompts, full chat history, or expensive model calls by default.
 
+[Live demo](https://nano-agent.pages.dev) · [npm](https://www.npmjs.com/package/@pallattu/nano-agent)
+
 ```text
 Task                Budget    Naive tokens  Nano tokens  Saved
 refund reply       900       1,566         182          88.4%
@@ -109,7 +111,7 @@ Example output:
 
 ## Public Demo
 
-The static browser demo lives in `site/`. Open `site/index.html` locally or deploy the folder to any static host.
+[Try the live demo](https://nano-agent.pages.dev), or open `site/index.html` locally.
 
 It lets users paste bloated context, set a token budget, and see:
 
