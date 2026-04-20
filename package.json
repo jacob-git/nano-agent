@@ -1,0 +1,58 @@
+{
+  "name": "@pallattu/nano-agent",
+  "version": "0.1.0",
+  "description": "Tiny AI agents with strict token, memory, and cost budgets.",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "nano-agent": "./dist/cli.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "examples",
+    "README.md",
+    "LICENSE"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jacob-git/nano-agent.git"
+  },
+  "homepage": "https://github.com/jacob-git/nano-agent#readme",
+  "bugs": {
+    "url": "https://github.com/jacob-git/nano-agent/issues"
+  },
+  "keywords": [
+    "ai",
+    "ai-agent",
+    "llm",
+    "agent",
+    "token-optimization",
+    "cost-optimization",
+    "context-window",
+    "memory",
+    "openai",
+    "anthropic",
+    "typescript"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "tsc",
+    "demo": "npm run build && node examples/refund-demo.mjs",
+    "test": "npm run build && node --test tests/*.test.mjs",
+    "prepublishOnly": "npm test"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.39",
+    "typescript": "^5.4.0"
+  }
+}
