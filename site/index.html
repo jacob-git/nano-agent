@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Nano Agent demo: compact AI context and show token savings before a model call.">
+    <title>Nano Agent Demo</title>
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <main class="shell">
+      <section class="intro">
+        <div>
+          <p class="eyebrow">Nano Agent</p>
+          <h1>Cut bloated AI context before it hits the model.</h1>
+          <p class="lede">Paste a messy prompt, set a hard budget, and see what the runtime keeps, trims, and drops.</p>
+        </div>
+        <div class="meter" aria-label="Token savings preview">
+          <div class="meter-row">
+            <span>Naive</span>
+            <div class="track"><div id="naiveBar" class="bar naive"></div></div>
+            <strong id="naiveTokens">0</strong>
+          </div>
+          <div class="meter-row">
+            <span>Nano</span>
+            <div class="track"><div id="nanoBar" class="bar nano"></div></div>
+            <strong id="nanoTokens">0</strong>
+          </div>
+          <div class="saved"><span id="savedPercent">0%</span> saved</div>
+        </div>
+      </section>
+
+      <section class="workspace">
+        <form class="panel" id="demoForm">
+          <label>
+            Goal
+            <input id="goal" value="Draft a concise support response for the latest customer issue.">
+          </label>
+          <label>
+            Token budget
+            <input id="budget" type="range" min="200" max="2200" step="100" value="900">
+            <output id="budgetValue">900 tokens</output>
+          </label>
+          <label>
+            Context
+            <textarea id="context" spellcheck="false"></textarea>
+          </label>
+        </form>
+
+        <section class="panel results" aria-live="polite">
+          <div class="stats">
+            <div>
+              <span>Naive context</span>
+              <strong id="statNaive">0</strong>
+            </div>
+            <div>
+              <span>Nano context</span>
+              <strong id="statNano">0</strong>
+            </div>
+            <div>
+              <span>Dropped</span>
+              <strong id="statDropped">0</strong>
+            </div>
+          </div>
+
+          <div class="columns">
+            <div>
+              <h2>Kept</h2>
+              <ul id="keptList"></ul>
+            </div>
+            <div>
+              <h2>Dropped</h2>
+              <ul id="droppedList"></ul>
+            </div>
+          </div>
+
+          <h2>Compact Packet</h2>
+          <pre id="packet"></pre>
+        </section>
+      </section>
+    </main>
+    <script src="./demo.js" type="module"></script>
+  </body>
+</html>

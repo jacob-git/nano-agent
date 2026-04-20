@@ -1,6 +1,6 @@
 {
   "name": "@pallattu/nano-agent",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "Tiny AI agents with strict token, memory, and cost budgets.",
   "type": "module",
   "main": "dist/index.js",
@@ -17,6 +17,7 @@
   "files": [
     "dist",
     "examples",
+    "site",
     "README.md",
     "LICENSE"
   ],

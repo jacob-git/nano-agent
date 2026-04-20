@@ -1,0 +1,31 @@
+{
+  "goal": "Answer the customer with the smallest useful context.",
+  "instructions": [
+    "Use only provided facts.",
+    "Keep the answer under 120 words."
+  ],
+  "budget": {
+    "maxInputTokens": 900
+  },
+  "globalMemory": {
+    "constraints": [
+      "Refunds over $100 require approval.",
+      "Never expose internal policy names to customers."
+    ]
+  },
+  "context": {
+    "ticket": "Customer says order ORD-123 was charged twice and asks for a duplicate-charge refund.",
+    "order": {
+      "id": "ORD-123",
+      "duplicateCharge": true,
+      "amountUsd": 42
+    },
+    "policy": "Refund policy section A. Refund policy section B. Refund policy section C. Refunds require order id, amount, payment event, and eligibility check before a customer-facing promise is made. Internal appendix: collect evidence, avoid unsupported promises, summarize action taken, route exceptions, check payment event, confirm customer id, review prior refund history, inspect risk notes, avoid exposing internal labels. Internal appendix: collect evidence, avoid unsupported promises, summarize action taken, route exceptions, check payment event, confirm customer id, review prior refund history, inspect risk notes, avoid exposing internal labels. Internal appendix: collect evidence, avoid unsupported promises, summarize action taken, route exceptions, check payment event, confirm customer id, review prior refund history, inspect risk notes, avoid exposing internal labels. Internal appendix: collect evidence, avoid unsupported promises, summarize action taken, route exceptions, check payment event, confirm customer id, review prior refund history, inspect risk notes, avoid exposing internal labels. Internal appendix: collect evidence, avoid unsupported promises, summarize action taken, route exceptions, check payment event, confirm customer id, review prior refund history, inspect risk notes, avoid exposing internal labels."
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "I was charged twice for order ORD-123."
+    }
+  ]
+}

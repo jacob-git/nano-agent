@@ -48,21 +48,6 @@ Nano Agent optimizes for restraint instead of maximum autonomy:
 npm install @pallattu/nano-agent
 ```
 
-## Release
-
-Publishing is handled by GitHub Actions when a version tag is pushed:
-
-```sh
-git tag v0.1.0
-git push origin main --tags
-```
-
-The repository must have this secret configured:
-
-```text
-NPM_TOKEN
-```
-
 ## Quick Start
 
 ```ts
@@ -122,6 +107,18 @@ Example output:
 }
 ```
 
+## Public Demo
+
+The static browser demo lives in `site/`. Open `site/index.html` locally or deploy the folder to any static host.
+
+It lets users paste bloated context, set a token budget, and see:
+
+- naive token estimate
+- compact Nano Agent token estimate
+- kept context
+- dropped context
+- generated compact packet
+
 ## Benchmark
 
 ```sh
@@ -160,6 +157,63 @@ const model = createOpenAIResponsesModel(new OpenAI(), {
 ```
 
 `openai` is an optional peer dependency so Nano Agent stays small for users who bring their own model adapter.
+
+## Provider Adapters
+
+Nano Agent ships structural adapters. You can use official SDK clients or compatible clients without adding hard runtime dependencies.
+
+### OpenAI Responses
+
+```ts
+const model = createOpenAIResponsesModel(openai, {
+  model: "gpt-5-mini",
+});
+```
+
+### OpenAI-Compatible Chat
+
+```ts
+const model = createOpenAICompatibleChatModel(client, {
+  model: "gpt-4.1-mini",
+});
+```
+
+### Anthropic Messages
+
+```ts
+const model = createAnthropicMessagesModel(anthropic, {
+  model: "claude-3-5-haiku-latest",
+});
+```
+
+## CLI
+
+Use the CLI to compact prompt/context JSON before a model call:
+
+```sh
+npx @pallattu/nano-agent budget \
+  --input examples/prompt-budget.json \
+  --max-input-tokens 120
+```
+
+Emit JSON for scripts:
+
+```sh
+npx @pallattu/nano-agent budget \
+  --input examples/prompt-budget.json \
+  --format json
+```
+
+Use it in CI:
+
+```sh
+npx @pallattu/nano-agent budget \
+  --input prompts/support-ticket.json \
+  --max-input-tokens 1200 \
+  --fail-on-over-budget
+```
+
+See `examples/github-action/prompt-budget.yml` for a GitHub Actions workflow.
 
 ## Core Concepts
 
@@ -235,6 +289,18 @@ Creates a small working memory snapshot.
 
 Creates an adapter for `client.responses.create()`.
 
+### `createOpenAICompatibleChatModel(client, options)`
+
+Creates an adapter for OpenAI-compatible `client.chat.completions.create()`.
+
+### `createAnthropicMessagesModel(client, options)`
+
+Creates an adapter for Anthropic-compatible `client.messages.create()`.
+
+### `getModelPricing(model)`
+
+Returns a built-in pricing estimate when Nano Agent recognizes a model name.
+
 ### `createMockModel(options)`
 
 Test/demo adapter for deterministic local examples.
@@ -249,9 +315,8 @@ It is a small runtime primitive for this problem:
 
 ## Roadmap
 
-- Anthropic adapter
-- provider pricing table
 - JSON schema validator helper
 - semantic context ranking
 - cache-aware prompt layout
-- GitHub Action for prompt budget regression checks
+- hosted public benchmark corpus
+- package-specific GitHub Action wrapper
