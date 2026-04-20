@@ -1,0 +1,32 @@
+{
+  "name": "coding assistant",
+  "budget": 140,
+  "input": {
+    "goal": "Identify the likely next debugging step for the newest deployment error.",
+    "instructions": [
+      "Prefer the newest error over older warnings.",
+      "Do not invent stack frames."
+    ],
+    "memory": {
+      "facts": [
+        "The app deploys to Cloudflare Pages.",
+        "The package is built with TypeScript."
+      ]
+    },
+    "messages": [
+      { "role": "user", "content": "Earlier we fixed a README typo." },
+      { "role": "assistant", "content": "The typo fix was committed." },
+      { "role": "user", "content": "Now the deploy fails at runtime." }
+    ],
+    "context": {
+      "latestError": "Cloudflare Pages Function failed with: Uncaught Error: No such module \"node:crypto\" imported from functionsWorker.js.",
+      "package": {
+        "type": "module",
+        "dependencies": {
+          "@pallattu/aeg-intent-gate": "^0.12.0"
+        }
+      },
+      "oldLogs": "Old warnings: lint preferred double quotes, README badge URL outdated, old npm cache notice, old deprecation warning, old CSS warning, resolved dependency warning, previous successful build output, unrelated Vite chunk size note, old package-lock diff, old Cloudflare deployment success log, repeated old warning lines that no longer matter."
+    }
+  }
+}

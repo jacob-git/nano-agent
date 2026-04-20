@@ -33,12 +33,16 @@
       <section class="workspace">
         <form class="panel" id="demoForm">
           <label>
+            Example
+            <select id="example"></select>
+          </label>
+          <label>
             Goal
             <input id="goal" value="Draft a concise support response for the latest customer issue.">
           </label>
           <label>
             Token budget
-            <input id="budget" type="range" min="200" max="2200" step="100" value="900">
+            <input id="budget" type="range" min="100" max="2200" step="50" value="900">
             <output id="budgetValue">900 tokens</output>
           </label>
           <label>

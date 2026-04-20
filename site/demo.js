@@ -1,18 +1,88 @@
-const sampleContext = `ticket:
-Customer says order ORD-123 was charged twice and asks for a duplicate-charge refund.
+const examples = [
+  {
+    name: "support ticket",
+    budget: 160,
+    goal: "Classify the support ticket and suggest the next action.",
+    context: `ticket:
+Enterprise customer cannot access the admin dashboard after SSO migration. Their admins receive an authorization loop after login.
 
-latest facts:
-- Duplicate charge: true
-- Amount: $42
-- Payment event matched the same card twice
+account:
+Tier: enterprise
+SSO enabled: true
+Affected users: 8
 
 old conversation:
-${"Customer asked about shipping updates, loyalty points, password reset, address changes, coupon eligibility, delivery windows, and older orders. ".repeat(18)}
+We are evaluating plan limits. Older question: can invoices include PO numbers? Current issue: our enterprise admin cannot access the dashboard after SSO migration.
+
+handbook:
+Support handbook: billing issues include invoice, payment, refunds, and failed card updates. Access issues include login failures, SSO migration errors, permission loops, account lockouts, and enterprise identity provider mismatch. Product bug issues include regressions, console errors, failed workflow states, and broken integrations. Enterprise access issues must be escalated to identity support with account id, identity provider, timestamp, and affected users. Older handbook sections describe response tone, greeting style, link formatting, and unrelated routing examples. Repeat: billing, access, bug, sales, escalation, routing, tone, greeting, procurement, onboarding, renewal, security questionnaire, old invoice note, old support macro, deprecated identity provider checklist, retired SSO provider migration guidance.`
+  },
+  {
+    name: "RAG answer",
+    budget: 150,
+    goal: "Answer the user question using only relevant retrieved context.",
+    context: `question:
+Can an AI agent restart the production API during business hours without human approval?
+
+retrievedPolicyA:
+Runtime governance policy: high-impact production actions require explicit human approval. Restarting production APIs, changing infrastructure settings, deleting customer data, modifying access control, or applying production migrations are high-impact actions.
+
+retrievedPolicyB:
+Low-impact actions include drafting messages, summarizing tickets, preparing pull requests, and checking read-only status dashboards.
+
+retrievedNoise:
+Unrelated policy archive: refund thresholds, customer communication tone, invoice corrections, marketing approvals, office access, lunch reimbursement, meeting room booking, deprecated vendor onboarding, archived security review notes, and outdated deployment calendar. This archive repeats many unrelated rules and examples that should not be used for the production restart question.`
+  },
+  {
+    name: "coding assistant",
+    budget: 140,
+    goal: "Identify the likely next debugging step for the newest deployment error.",
+    context: `latestError:
+Cloudflare Pages Function failed with: Uncaught Error: No such module "node:crypto" imported from functionsWorker.js.
+
+package:
+type: module
+dependency: @pallattu/aeg-intent-gate
+
+oldLogs:
+Old warnings: lint preferred double quotes, README badge URL outdated, old npm cache notice, old deprecation warning, old CSS warning, resolved dependency warning, previous successful build output, unrelated Vite chunk size note, old package-lock diff, old Cloudflare deployment success log, repeated old warning lines that no longer matter.`
+  },
+  {
+    name: "long chat",
+    budget: 130,
+    goal: "Write a concise answer for the user's latest request.",
+    context: `latestNeed:
+The user needs a short migration checklist for moving the support team to SSO.
+
+migrationFacts:
+SSO migration requires identity provider setup, test group validation, admin access fallback, user communication, migration date, rollback owner, and post-migration login verification.
+
+oldChatSummary:
+The old conversation covered pricing, integrations, billing history, product roadmap, trial extensions, admin roles, workspace naming, notification preferences, older implementation questions, unrelated API examples, and repeated exploration of non-current product features.`
+  },
+  {
+    name: "policy answer",
+    budget: 140,
+    goal: "Decide whether the requested action needs approval.",
+    context: `request:
+The proposed action is automatic deletion of stale customer records in production.
 
 policy:
-Refund requests must include customer id, order id, amount, reason, prior refund history, and approval status. Refunds over $100 require manual approval. Duplicate-charge refunds under $100 can be acknowledged, but the agent must avoid promising money before billing review confirms eligibility. ${"Internal policy appendix: collect evidence, avoid unsupported promises, summarize action taken, and route exceptions. ".repeat(16)}
-`;
+Rule 1: Drafting text is low impact. Rule 2: Read-only status checks are low impact. Rule 3: Any deletion or mutation of production customer data is high impact and requires explicit human approval. Rule 4: Billing refunds above threshold require approval. Rule 5: Marketing copy can be drafted without approval. Rule 6: Infrastructure changes require approval. Appendix: examples, tone, old policy migration notes, duplicate historical rules, archived approval routing, unrelated office policy, deprecated email review policy, old refund examples, and repeated historical notes.`
+  },
+  {
+    name: "meeting summary",
+    budget: 120,
+    goal: "Extract current action items from the latest meeting notes.",
+    context: `latestNotes:
+Alex owns API rollout by Friday. Priya owns billing QA before launch. Jacob will publish the package after CI passes. Sam will update the demo URL in the README today.
 
+historicalNotes:
+Older meeting notes: resolved landing page copy, old deployment checklist, completed domain setup, archived launch ideas, previous naming debate, old support routing decision, completed package rename, stale issue triage, repeated older action items that were already done, outdated roadmap notes, old demo experiment, old benchmark draft, completed npm token setup.`
+  }
+];
+
+const example = document.querySelector("#example");
 const goal = document.querySelector("#goal");
 const budget = document.querySelector("#budget");
 const budgetValue = document.querySelector("#budgetValue");
@@ -29,13 +99,30 @@ const keptList = document.querySelector("#keptList");
 const droppedList = document.querySelector("#droppedList");
 const packet = document.querySelector("#packet");
 
-context.value = sampleContext;
+example.replaceChildren(...examples.map((item, index) => {
+  const option = document.createElement("option");
+  option.value = String(index);
+  option.textContent = item.name;
+  return option;
+}));
+
+example.addEventListener("change", () => {
+  loadExample(Number(example.value));
+});
 
 for (const element of [goal, budget, context]) {
   element.addEventListener("input", render);
 }
 
-render();
+loadExample(0);
+
+function loadExample(index) {
+  const item = examples[index] ?? examples[0];
+  goal.value = item.goal;
+  budget.value = String(item.budget);
+  context.value = item.context;
+  render();
+}
 
 function render() {
   const maxTokens = Number(budget.value);
@@ -44,7 +131,7 @@ function render() {
   const candidates = [
     { label: "goal", priority: 100, text: `Goal:\n${goal.value}` },
     { label: "instruction:1", priority: 90, text: "Instruction:\nUse only facts in context." },
-    { label: "memory", priority: 80, text: "Memory:\nConstraint: Refunds over $100 require approval.\nPreference: Keep customer replies concise." },
+    { label: "memory", priority: 80, text: "Memory:\nConstraint: High-impact actions require approval.\nPreference: Keep answers concise." },
     ...splitContext(context.value).map((item, index) => ({
       label: `context:${item.label}`,
       priority: 60 - index,

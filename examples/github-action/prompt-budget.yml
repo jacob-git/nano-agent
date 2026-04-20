@@ -17,8 +17,7 @@ jobs:
           node-version: 22
 
       - name: Check prompt context budget
-        run: |
-          npx @pallattu/nano-agent budget \
-            --input prompts/support-ticket.json \
-            --max-input-tokens 1200 \
-            --fail-on-over-budget
+        uses: jacob-git/nano-agent/action@v0
+        with:
+          input: prompts/support-ticket.json
+          max-input-tokens: 1200

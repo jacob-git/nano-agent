@@ -133,6 +133,7 @@ label {
 }
 
 input,
+select,
 textarea {
   width: 100%;
   border: 1px solid var(--line);
@@ -143,6 +144,11 @@ textarea {
 }
 
 input {
+  min-height: 44px;
+  padding: 0 12px;
+}
+
+select {
   min-height: 44px;
   padding: 0 12px;
 }

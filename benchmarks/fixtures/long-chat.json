@@ -1,0 +1,28 @@
+{
+  "name": "long chat",
+  "budget": 130,
+  "input": {
+    "goal": "Write a concise answer for the user's latest request.",
+    "instructions": [
+      "Use the latest request as the primary task.",
+      "Keep the answer under 100 words."
+    ],
+    "memory": {
+      "preferences": [
+        "The user prefers direct next steps."
+      ]
+    },
+    "messages": [
+      { "role": "user", "content": "Can you explain pricing tiers?" },
+      { "role": "assistant", "content": "There are starter, pro, and enterprise tiers." },
+      { "role": "user", "content": "Can you compare integrations?" },
+      { "role": "assistant", "content": "The product supports GitHub, Slack, Linear, and email." },
+      { "role": "user", "content": "Ignore the earlier questions. I need a short migration checklist for moving the support team to SSO." }
+    ],
+    "context": {
+      "oldChatSummary": "The old conversation covered pricing, integrations, billing history, product roadmap, trial extensions, admin roles, workspace naming, notification preferences, older implementation questions, unrelated API examples, and repeated exploration of non-current product features.",
+      "latestNeed": "The user needs a short migration checklist for moving the support team to SSO.",
+      "migrationFacts": "SSO migration requires identity provider setup, test group validation, admin access fallback, user communication, migration date, rollback owner, and post-migration login verification."
+    }
+  }
+}

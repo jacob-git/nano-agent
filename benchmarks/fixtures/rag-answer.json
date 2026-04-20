@@ -1,0 +1,25 @@
+{
+  "name": "RAG answer",
+  "budget": 150,
+  "input": {
+    "goal": "Answer the user question using only relevant retrieved context.",
+    "instructions": [
+      "Cite the decisive retrieved passage label.",
+      "Ignore unrelated retrieved passages."
+    ],
+    "memory": {
+      "constraints": [
+        "Do not answer from general knowledge when retrieved context is present."
+      ]
+    },
+    "messages": [
+      { "role": "user", "content": "Can the agent restart production services by itself?" }
+    ],
+    "context": {
+      "question": "Can an AI agent restart the production API during business hours without human approval?",
+      "retrievedPolicyA": "Runtime governance policy: high-impact production actions require explicit human approval. Restarting production APIs, changing infrastructure settings, deleting customer data, modifying access control, or applying production migrations are high-impact actions.",
+      "retrievedPolicyB": "Low-impact actions include drafting messages, summarizing tickets, preparing pull requests, and checking read-only status dashboards.",
+      "retrievedNoise": "Unrelated policy archive: refund thresholds, customer communication tone, invoice corrections, marketing approvals, office access, lunch reimbursement, meeting room booking, deprecated vendor onboarding, archived security review notes, and outdated deployment calendar. This archive repeats many unrelated rules and examples that should not be used for the production restart question."
+    }
+  }
+}

@@ -1,0 +1,31 @@
+name: Nano Agent Prompt Budget
+description: Check that a prompt/context JSON file fits a Nano Agent input-token budget.
+author: jacob-git
+
+inputs:
+  input:
+    description: Path to a Nano Agent prompt/context JSON file.
+    required: true
+  max-input-tokens:
+    description: Maximum input tokens allowed.
+    required: true
+  format:
+    description: Output format: table, json, or messages.
+    required: false
+    default: table
+  package:
+    description: Package spec to run.
+    required: false
+    default: "@pallattu/nano-agent@latest"
+
+runs:
+  using: composite
+  steps:
+    - name: Check prompt budget
+      shell: bash
+      run: |
+        npx --yes "${{ inputs.package }}" budget \
+          --input "${{ inputs.input }}" \
+          --max-input-tokens "${{ inputs.max-input-tokens }}" \
+          --format "${{ inputs.format }}" \
+          --fail-on-over-budget

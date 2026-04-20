@@ -16,6 +16,7 @@ type CliOptions = {
 };
 
 type BudgetFile = NanoContextInput & {
+  input?: NanoContextInput;
   budget?: {
     maxInputTokens?: number;
     reserveOutputTokens?: number;
@@ -120,6 +121,14 @@ function parseBudgetJson(raw: string): BudgetFile {
     throw new TypeError("No input provided. Pass --input file.json or pipe JSON to stdin.");
   }
   const parsed = JSON.parse(raw) as BudgetFile;
+  if (parsed.input?.goal) {
+    return {
+      ...parsed.input,
+      budget: parsed.budget,
+      maxRecentMessages: parsed.maxRecentMessages,
+      globalMemory: parsed.globalMemory,
+    } as BudgetFile;
+  }
   if (!parsed.goal) {
     throw new TypeError("Budget input JSON must include a goal.");
   }

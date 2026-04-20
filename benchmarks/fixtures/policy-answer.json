@@ -1,0 +1,25 @@
+{
+  "name": "policy answer",
+  "budget": 140,
+  "input": {
+    "goal": "Decide whether the requested action needs approval.",
+    "instructions": [
+      "Return decision and reason.",
+      "Cite only the decisive rule."
+    ],
+    "memory": {
+      "constraints": [
+        "High-impact production actions require human approval."
+      ]
+    },
+    "messages": [
+      { "role": "user", "content": "Can the agent send a customer email draft?" },
+      { "role": "assistant", "content": "Drafting is allowed; sending may need checks." },
+      { "role": "user", "content": "Can it delete stale customer records in production automatically?" }
+    ],
+    "context": {
+      "request": "The proposed action is automatic deletion of stale customer records in production.",
+      "policy": "Rule 1: Drafting text is low impact. Rule 2: Read-only status checks are low impact. Rule 3: Any deletion or mutation of production customer data is high impact and requires explicit human approval. Rule 4: Billing refunds above threshold require approval. Rule 5: Marketing copy can be drafted without approval. Rule 6: Infrastructure changes require approval. Appendix: examples, tone, old policy migration notes, duplicate historical rules, archived approval routing, unrelated office policy, deprecated email review policy, old refund examples, and repeated historical notes."
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "name": "meeting summary",
+  "budget": 120,
+  "input": {
+    "goal": "Extract current action items from the latest meeting notes.",
+    "instructions": [
+      "Return owner, task, and due date when present.",
+      "Ignore completed historical tasks."
+    ],
+    "memory": {
+      "preferences": [
+        "Use compact internal wording."
+      ]
+    },
+    "messages": [
+      { "role": "user", "content": "Summarize action items from all notes." }
+    ],
+    "context": {
+      "latestNotes": "Alex owns API rollout by Friday. Priya owns billing QA before launch. Jacob will publish the package after CI passes. Sam will update the demo URL in the README today.",
+      "historicalNotes": "Older meeting notes: resolved landing page copy, old deployment checklist, completed domain setup, archived launch ideas, previous naming debate, old support routing decision, completed package rename, stale issue triage, repeated older action items that were already done, outdated roadmap notes, old demo experiment, old benchmark draft, completed npm token setup."
+    }
+  }
+}

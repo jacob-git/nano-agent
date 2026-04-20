@@ -1,0 +1,35 @@
+{
+  "name": "support ticket",
+  "budget": 160,
+  "input": {
+    "goal": "Classify the support ticket and suggest the next action.",
+    "instructions": [
+      "Return category, priority, and next action.",
+      "Use the latest customer problem over old chat history."
+    ],
+    "memory": {
+      "facts": [
+        "The support team uses categories: billing, access, bug, sales."
+      ],
+      "constraints": [
+        "Escalate enterprise access issues."
+      ]
+    },
+    "messages": [
+      { "role": "user", "content": "We are evaluating plan limits." },
+      { "role": "assistant", "content": "I can explain plan limits and billing tiers." },
+      { "role": "user", "content": "Older question: can invoices include PO numbers?" },
+      { "role": "assistant", "content": "Yes, invoices can include PO numbers." },
+      { "role": "user", "content": "Current issue: our enterprise admin cannot access the dashboard after SSO migration." }
+    ],
+    "context": {
+      "ticket": "Enterprise customer cannot access the admin dashboard after SSO migration. Their admins receive an authorization loop after login.",
+      "account": {
+        "tier": "enterprise",
+        "ssoEnabled": true,
+        "affectedUsers": 8
+      },
+      "handbook": "Support handbook: billing issues include invoice, payment, refunds, and failed card updates. Access issues include login failures, SSO migration errors, permission loops, account lockouts, and enterprise identity provider mismatch. Product bug issues include regressions, console errors, failed workflow states, and broken integrations. Sales issues include plan limits, trials, procurement, renewals, and security review. Enterprise access issues must be escalated to identity support with account id, identity provider, timestamp, and affected users. Older handbook sections describe response tone, greeting style, link formatting, and unrelated routing examples. Repeat: billing, access, bug, sales, escalation, routing, tone, greeting, procurement, onboarding, renewal, security questionnaire, old invoice note, old support macro, deprecated identity provider checklist, retired SSO provider migration guidance."
+    }
+  }
+}

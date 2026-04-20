@@ -127,21 +127,24 @@ It lets users paste bloated context, set a token budget, and see:
 npm run benchmark
 ```
 
+Benchmarks are fixture-based and live in `benchmarks/fixtures/`, so the cases are easy to inspect and extend.
+
 Example output:
 
 ```text
 Nano Agent Benchmark
 
-Task                Budget    Naive tokens  Nano tokens  Saved     Dropped
-refund reply        900       1,566         182          88.4%     2
-support triage      1000      1,717         157          90.9%     2
-policy answer       1200      2,389         148          93.8%     2
-meeting follow-up   800       1,330         149          88.8%     2
-bug report          950       1,662         150          91.0%     2
+Task              Budget    Naive tokens  Nano tokens  Saved     Dropped
+coding assistant  140       191           121          36.6%     1
+long chat         130       208           116          44.2%     3
+meeting summary   120       168           93           44.6%     1
+policy answer     140       212           95           55.2%     1
+RAG answer        150       243           114          53.1%     2
+support ticket    160       328           153          53.4%     2
 
-Total naive context: 8,664 tokens
-Total nano context:  786 tokens
-Total saved:         90.9%
+Total naive context: 1,350 tokens
+Total nano context:  692 tokens
+Total saved:         48.7%
 ```
 
 ## OpenAI Adapter
@@ -216,6 +219,15 @@ npx @pallattu/nano-agent budget \
 ```
 
 See `examples/github-action/prompt-budget.yml` for a GitHub Actions workflow.
+
+Or use the reusable action:
+
+```yaml
+- uses: jacob-git/nano-agent/action@v0
+  with:
+    input: prompts/support-ticket.json
+    max-input-tokens: 1200
+```
 
 ## Core Concepts
 
