@@ -48,6 +48,21 @@ Nano Agent optimizes for restraint instead of maximum autonomy:
 npm install @pallattu/nano-agent
 ```
 
+## Release
+
+Publishing is handled by GitHub Actions when a version tag is pushed:
+
+```sh
+git tag v0.1.0
+git push origin main --tags
+```
+
+The repository must have this secret configured:
+
+```text
+NPM_TOKEN
+```
+
 ## Quick Start
 
 ```ts
