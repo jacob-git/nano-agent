@@ -10,6 +10,8 @@ Nano Agent helps you build useful AI workflows without sending huge prompts, ful
 
 [Live demo](https://nano-agent.pages.dev) · [npm](https://www.npmjs.com/package/@pallattu/nano-agent)
 
+![Nano Agent demo preview](./site/og.png)
+
 ```text
 Task                Budget    Naive tokens  Nano tokens  Saved
 refund reply       900       1,566         182          88.4%
@@ -31,6 +33,12 @@ Most AI apps waste tokens by sending too much context:
 Nano Agent starts from one rule:
 
 > No model call should exceed the budget unless you explicitly allow escalation.
+
+## Why Not Full History?
+
+Sending full chat history feels safe, but it usually makes AI apps slower, more expensive, and less focused. Old messages compete with the current task. RAG often adds noisy chunks beside the one passage that matters. Cheap-first routing only works when the cheap model receives a small, decisive packet.
+
+Nano Agent makes that packet explicit. It builds context under a hard budget, drops low-priority sections, keeps recent messages tight, and returns a report showing exactly what was kept and dropped.
 
 ## What Makes It Nano
 

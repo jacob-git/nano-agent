@@ -4,6 +4,17 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Nano Agent demo: compact AI context and show token savings before a model call.">
+    <meta property="og:title" content="Nano Agent">
+    <meta property="og:description" content="Cut bloated AI context before it hits the model.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://nano-agent.pages.dev">
+    <meta property="og:image" content="https://nano-agent.pages.dev/og.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Nano Agent">
+    <meta name="twitter:description" content="Cut bloated AI context before it hits the model.">
+    <meta name="twitter:image" content="https://nano-agent.pages.dev/og.png">
     <title>Nano Agent Demo</title>
     <link rel="stylesheet" href="./styles.css">
   </head>
@@ -79,6 +90,11 @@
           </div>
 
           <h2>Compact Packet</h2>
+          <div class="packet-actions">
+            <button id="copyPacket" type="button">Copy JSON</button>
+            <button id="downloadPacket" type="button">Download JSON</button>
+            <span id="packetStatus" role="status"></span>
+          </div>
           <pre id="packet"></pre>
         </section>
       </section>

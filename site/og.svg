@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#f6f7f4"/>
+  <rect x="58" y="56" width="1084" height="518" rx="22" fill="#ffffff" stroke="#d8ddd0" stroke-width="2"/>
+  <text x="96" y="132" fill="#0f7b63" font-family="Inter, Arial, sans-serif" font-size="30" font-weight="800">NANO AGENT</text>
+  <text x="96" y="220" fill="#171915" font-family="Inter, Arial, sans-serif" font-size="64" font-weight="900">Cut AI context</text>
+  <text x="96" y="296" fill="#171915" font-family="Inter, Arial, sans-serif" font-size="64" font-weight="900">before model calls.</text>
+  <text x="96" y="372" fill="#62675d" font-family="Inter, Arial, sans-serif" font-size="30">Hard token budgets, compact memory, cheap-first calls.</text>
+  <rect x="96" y="448" width="450" height="34" rx="17" fill="#e9ddd9"/>
+  <rect x="96" y="448" width="450" height="34" rx="17" fill="#be3f2f"/>
+  <rect x="96" y="508" width="450" height="34" rx="17" fill="#e3ebe6"/>
+  <rect x="96" y="508" width="224" height="34" rx="17" fill="#0f7b63"/>
+  <text x="574" y="475" fill="#62675d" font-family="Inter, Arial, sans-serif" font-size="28">Naive context</text>
+  <text x="574" y="535" fill="#62675d" font-family="Inter, Arial, sans-serif" font-size="28">Nano context</text>
+  <text x="862" y="518" fill="#0f7b63" font-family="Inter, Arial, sans-serif" font-size="72" font-weight="900">48.7%</text>
+  <text x="862" y="554" fill="#62675d" font-family="Inter, Arial, sans-serif" font-size="28">saved in fixtures</text>
+</svg>

@@ -24,8 +24,16 @@ runs:
     - name: Check prompt budget
       shell: bash
       run: |
-        npx --yes "${{ inputs.package }}" budget \
-          --input "${{ inputs.input }}" \
-          --max-input-tokens "${{ inputs.max-input-tokens }}" \
-          --format "${{ inputs.format }}" \
-          --fail-on-over-budget
+        if [ "${{ inputs.package }}" = "." ]; then
+          node dist/cli.js budget \
+            --input "${{ inputs.input }}" \
+            --max-input-tokens "${{ inputs.max-input-tokens }}" \
+            --format "${{ inputs.format }}" \
+            --fail-on-over-budget
+        else
+          npx --yes "${{ inputs.package }}" budget \
+            --input "${{ inputs.input }}" \
+            --max-input-tokens "${{ inputs.max-input-tokens }}" \
+            --format "${{ inputs.format }}" \
+            --fail-on-over-budget
+        fi

@@ -98,6 +98,10 @@ const statDropped = document.querySelector("#statDropped");
 const keptList = document.querySelector("#keptList");
 const droppedList = document.querySelector("#droppedList");
 const packet = document.querySelector("#packet");
+const copyPacket = document.querySelector("#copyPacket");
+const downloadPacket = document.querySelector("#downloadPacket");
+const packetStatus = document.querySelector("#packetStatus");
+let currentPacket = {};
 
 example.replaceChildren(...examples.map((item, index) => {
   const option = document.createElement("option");
@@ -113,6 +117,22 @@ example.addEventListener("change", () => {
 for (const element of [goal, budget, context]) {
   element.addEventListener("input", render);
 }
+
+copyPacket.addEventListener("click", async () => {
+  const json = JSON.stringify(currentPacket, null, 2);
+  await navigator.clipboard.writeText(json);
+  setPacketStatus("Copied");
+});
+
+downloadPacket.addEventListener("click", () => {
+  const blob = new Blob([JSON.stringify(currentPacket, null, 2)], { type: "application/json" });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = `${slugify(example.selectedOptions[0]?.textContent ?? "nano-agent")}-packet.json`;
+  link.click();
+  URL.revokeObjectURL(link.href);
+  setPacketStatus("Downloaded");
+});
 
 loadExample(0);
 
@@ -172,7 +192,7 @@ function render() {
 
   renderList(keptList, kept);
   renderList(droppedList, dropped.length ? dropped : ["nothing"]);
-  packet.textContent = JSON.stringify({
+  currentPacket = {
     goal: goal.value,
     inputTokens: used,
     originalTokens: original,
@@ -181,7 +201,8 @@ function render() {
     kept,
     dropped,
     messages,
-  }, null, 2);
+  };
+  packet.textContent = JSON.stringify(currentPacket, null, 2);
 }
 
 function renderList(target, items) {
@@ -223,4 +244,15 @@ function trimToTokens(text, maxTokens) {
     output = candidate;
   }
   return output ? `${output} ...` : "";
+}
+
+function slugify(value) {
+  return String(value).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+}
+
+function setPacketStatus(value) {
+  packetStatus.textContent = value;
+  window.setTimeout(() => {
+    if (packetStatus.textContent === value) packetStatus.textContent = "";
+  }, 1800);
 }
