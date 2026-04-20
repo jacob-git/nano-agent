@@ -46,6 +46,36 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
+      - name: Ensure public access
+        if: env.NODE_AUTH_TOKEN != ''
+        shell: bash
+        run: |
+          PACKAGE_NAME="$(node -p "require('./package.json').name")"
+          npm access public "$PACKAGE_NAME" || true
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Verify public registry visibility
+        shell: bash
+        run: |
+          PACKAGE_NAME="$(node -p "require('./package.json').name")"
+          PACKAGE_VERSION="$(node -p "require('./package.json').version")"
+          PACKAGE_PATH="${PACKAGE_NAME/@/%40}"
+          PACKAGE_PATH="${PACKAGE_PATH/\//%2f}"
+
+          for attempt in {1..12}; do
+            if curl --fail --silent --show-error "https://registry.npmjs.org/${PACKAGE_PATH}" >/dev/null; then
+              npm_config_userconfig=/tmp/nano-agent-empty-npmrc npm view "$PACKAGE_NAME@$PACKAGE_VERSION" version
+              exit 0
+            fi
+
+            echo "Package is not publicly visible yet; retry ${attempt}/12."
+            sleep 10
+          done
+
+          echo "Package was published but is not publicly visible on the npm registry."
+          exit 1
+
       - name: Missing npm token
         if: steps.published.outputs.already_published == 'false' && env.NODE_AUTH_TOKEN == ''
         run: |
