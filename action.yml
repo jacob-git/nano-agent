@@ -10,7 +10,7 @@ inputs:
     description: Maximum input tokens allowed.
     required: true
   format:
-    description: Output format: table, json, or messages.
+    description: "Output format: table, json, or messages."
     required: false
     default: table
   package:
